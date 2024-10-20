@@ -1,99 +1,77 @@
-Weather Monitoring with Rollups and Aggregates
-This project is a real-time weather monitoring system that collects data from the OpenWeatherMap API. It fetches weather information for major Indian metros (Delhi, Mumbai, Chennai, Bangalore, Kolkata, Hyderabad), processes the data, and stores it in an SQLite database. The system also calculates daily rollups and aggregates like the average temperature, dominant weather condition, and can trigger alerts based on user-defined thresholds.
+# Weather Monitoring with Rollups and Aggregates
 
-Features
-Fetches weather data in real-time at configurable intervals.
-Processes weather data for daily rollups (e.g., average temperature, max/min temperature).
-Supports user-defined alert thresholds (e.g., temperature crossing 35°C).
-Stores weather data in a SQLite database.
-Extensible for additional weather parameters like humidity, wind speed, etc.
-Prerequisites
-To run this project, ensure you have the following installed:
+This project provides a system to monitor real-time weather data using the OpenWeatherMap API. The system fetches weather data for a given city, stores it in a database, and performs rollup and aggregate calculations such as average temperature, maximum humidity, and so on.
 
-Python 3.6+
-Virtual Environment for Python (recommended).
-OpenWeatherMap API Key (Sign up at https://openweathermap.org/ to get your API key).
-Docker (Optional, if you want to run the project using Docker).
-Project Setup
-1. Clone the Repository
-Clone this repository to your local machine:
+## Features
 
-bash
-Copy code
-git clone https://github.com/your-username/weather-monitor.git
-cd weather-monitor
-2. Create and Activate a Virtual Environment (Optional but recommended)
-Linux/MacOS:
+- Fetch real-time weather data using the [OpenWeatherMap API](https://openweathermap.org/api)
+- Store weather data in a SQLite database
+- Perform rollups and aggregates on the weather data
+- Send alerts when thresholds are exceeded
 
-bash
-Copy code
+## Prerequisites
+
+To run this project, you need to have the following installed:
+
+- Python 3.7+
+- [OpenWeatherMap API Key](https://openweathermap.org/appid)
+- Docker (optional for containerization)
+
+## Project Structure
+
+```bash
+├── alerts.py              # Alert system for threshold checking
+├── config.py              # Configuration file with API key and thresholds
+├── database.py            # SQLite database setup and data storage
+├── main.py                # Main script to fetch and store weather data
+├── requirements.txt       # Python dependencies
+├── Dockerfile             # Docker setup
+├── weather_data.db        # SQLite database file (created automatically)
+└── README.md              # Project documentation
+
+Installation
+Step 1: Clone the Repository
+git clone https://github.com/Anmolcoding/Weather-Monitoring-with-Rollups-and-Aggregates.git
+cd Weather-Monitoring-with-Rollups-and-Aggregates
+Step 2: Set up a Virtual Environment (optional but recommended)
 python3 -m venv venv
 source venv/bin/activate
-Windows:
-
-bash
-Copy code
-python -m venv venv
-.\venv\Scripts\activate
-3. Install Dependencies
-Install all required Python packages using pip:
-
-bash
-Copy code
+Step 3: Install Dependencies
 pip install -r requirements.txt
-4. Set up API Key
-Create a config.py file inside the project directory (if not already present). Add your OpenWeatherMap API key in the following format:
-
-python
-Copy code
+Step 4: Set Up the OpenWeatherMap API Key
+Edit the config.py file and replace <YOUR_API_KEY> with your actual OpenWeatherMap API key.
 # config.py
-API_KEY = 'your_openweathermap_api_key'
-TEMP_THRESHOLD = 35  # Set your temperature alert threshold here (in Celsius)
-Replace 'your_openweathermap_api_key' with your actual API key from OpenWeatherMap.
-
-5. Initialize Database
-To create the database file (weather_data.db), run:
-
-bash
-Copy code
-python create_database.py
-This will generate the required SQLite database and tables.
-
-6. Running the Application
-To start fetching weather data and storing it in the database, simply run:
-
-bash
-Copy code
+API_KEY = "<YOUR_API_KEY>"
+Step 5: Run the Application
 python main.py
-The system will continuously fetch weather data at intervals defined in the script, process it, and store it in the SQLite database.
-
 Docker Setup (Optional)
-If you want to run the project inside a Docker container, follow these steps:
+You can also run the project inside a Docker container.
 
-1. Build the Docker Image
-bash
-Copy code
+Step 1: Build the Docker Image
 docker build -t weather-monitor .
-2. Run the Docker Container
-bash
-Copy code
+Step 2: Run the Docker Container
 docker run -d weather-monitor
-This will run the weather monitoring service in a containerized environment.
+Usage
+The application fetches weather data, stores it in a local SQLite database, and performs rollups and aggregates.
 
-Test Cases
-To ensure the system works as expected, a few test cases are available:
+Database Schema
+The weather table contains the following fields:
 
-System Setup: Ensure the system starts correctly and connects to the OpenWeatherMap API.
-Data Retrieval: Validate that weather data is fetched at the correct intervals.
-Temperature Conversion: Check if temperature is converted from Kelvin to Celsius properly.
-Daily Summary: Verify that daily weather summaries are calculated and stored accurately.
-Alerting Thresholds: Ensure alerts are triggered when the temperature exceeds the configured threshold.
+city (TEXT)
+temperature (REAL)
+humidity (REAL)
+pressure (REAL)
+timestamp (TEXT)
+Alerts
+You can configure temperature thresholds in the config.py file:
+TEMP_THRESHOLD = 35  # Trigger alert if temperature exceeds 35°C
 Troubleshooting
-ModuleNotFoundError for requests: Ensure that the virtual environment is activated and requests is installed using pip install requests.
-API Key Issues: Double-check that you have set the correct API key in config.py.
-SQLite Database Issues: Make sure the database is initialized properly by running python create_database.py.
-Future Improvements
-Add support for more cities or regions.
-Implement more weather parameters like humidity, wind speed.
-Add a web dashboard for visualizing weather trends.
-Extend alerting system to send email notifications
+Common Issues
+Module Not Found: If you get a ModuleNotFoundError for any package, ensure that you've installed all the dependencies from requirements.txt.
+
+API Key Issues: Ensure that you've correctly set up your API key in config.py.
+
+Database Errors: If you encounter any SQLite database issues, try deleting weather_data.db and rerun the application to recreate the database.
+
+Database Not Found
+If you're facing errors like sqlite3.DatabaseError: file is not a database, make sure the weather_data.db is being created correctly, or try rebuilding the database using the provided scripts.
