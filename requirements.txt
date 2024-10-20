@@ -1,0 +1,6 @@
+requests==2.31.0      # For making API calls to OpenWeatherMap
+pandas==2.0.3         # For data manipulation and daily rollups/aggregates
+matplotlib==3.7.1     # For generating visualizations of weather trends
+APScheduler==3.10.1   # For scheduling periodic weather data fetching
+sqlite3               # Built-in Python library for database (doesn't need to be installed separately)
+requests
